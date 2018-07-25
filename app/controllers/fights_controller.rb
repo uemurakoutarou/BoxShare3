@@ -4,6 +4,12 @@ class FightsController < ApplicationController
     @fight = Fight.order("created_at DESC")
   end
 
+  def show
+    @fight = Fight.find(params[:id])
+    @comments = @fight.comments.includes(:fight)
+    @comment = Comment.new
+  end
+
   def new
     unless user_signed_in?
       redirect_to :root, alert: '投稿には会員登録、ログインが必要です。'

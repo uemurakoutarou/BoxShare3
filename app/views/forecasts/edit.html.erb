@@ -1,0 +1,76 @@
+<header class="alert-secondary">
+  <div class="text-center">
+    <h2 ><%= link_to "#{@fight.player_A} VS #{@fight.player_B}", fight_path(@fight) %></h2>
+    <h4>in<%= @fight.place %></h4>
+    <% if user_signed_in? && current_user.id == @fight.user_id %>
+      <p><%= link_to "編集", edit_fight_path(@fight) %></p>
+      <!-- 削除 -->
+    <% end %>
+    <p><%= simple_format(@fight.detail) %></p>
+    <%= form_tag(new_forecast_path, method: :get) do %>
+      <%= hidden_field_tag(:fight_id, @fight.id) %>
+      <%= submit_tag("予想一覧へ", class: "btn btn-default") %>
+    <% end %>
+    <br>
+  </div>
+</header>
+
+<script>
+//グラフ
+var doughnutData = [
+  {
+    value: <%= Forecast.where(fight_id: @fight, support: @fight.player_A).count %>,
+    color:"#9bcad0",
+    highlight: "#a7d7de",
+    label: "<%= @fight.player_A %>"
+  },
+  {
+    value: <%= Forecast.where(fight_id: @fight, support: @fight.player_B).count %>,
+    color: "#d5a87f",
+    highlight: "#e4b68a",
+    label: "<%= @fight.player_B %>"
+  },
+  {
+    value: <%= Forecast.where(fight_id: @fight, support: "ドロー").count %>,
+    color: "#edef9c",
+    highlight: "#fcfea6",
+    label: "ドロー"
+  }
+];
+window.onload = function(){
+  var ctx = document.getElementById("chart").getContext("2d");
+  window.myDoughnut = new Chart(ctx).Doughnut(doughnutData, {
+    responsive : true
+  });
+}
+</script>
+
+
+<div class="text-center">
+  <h3><%= @fight.player_A %> VS <%= @fight.player_B %></h3>
+  <h4><%= @forecasts.count %><small>Forecasts</small></h4>
+  <% if user_signed_in? %>
+    <%= form_for(@forecast) do |f| %>
+      <%= @fight.player_A %>の勝利<%= f.radio_button :support, "#{@fight.player_A}" %><br>
+      <%= @fight.player_B %>の勝利<%= f.radio_button :support, "#{@fight.player_B}" %><br>
+      引き分け<%= f.radio_button :support, "ドロー" %>
+      <%= f.text_area :detail, placeholder: "コメントする", size:"30x10", class: "form-control" %>
+      <%= f.hidden_field :fight_id %>
+      <%= f.submit "予想する", size:"30x10", class: "btn btn-warning col-xs-12" %>
+    <% end %>
+  <% else %>
+    <p class="text-center" style="color: #FFF">★<%= link_to "会員登録", new_user_registration_path %>、あるいは<%= link_to "ログイン", new_user_session_path %>すると投稿できます。★</p>
+  <% end %>
+
+  <hr class="style3">
+  <div style="width: 70%">
+    <canvas id="chart"></canvas>
+  </div>
+  <br>
+
+  <small>コメント一覧</small>
+  <hr class="style-two">
+  <% @real_forecast.each do |forecast| %>
+    <%= render partial: "forecasts/forecast", locals:{forecast:forecast} %>
+  <% end %>
+</div>

@@ -1,0 +1,32 @@
+
+<header id="header" class="">
+  <div class="text-center">
+    <h2><%= link_to @user.nickname, user_path(@user) %></h2>
+    <% if user_signed_in? %>
+      <% unless current_user.id == @user.id %>
+        <%= render "follow_form" %>
+      <% end %>
+    <% end %>
+    <% if user_signed_in? && current_user.id == @user.id %>
+      <div class="profile_edit">
+        <%= link_to "プロフィールを編集", edit_user_path(current_user) %>
+      </div>
+    <% end %>
+
+    <section>
+      <%= render "users/stats" %>
+    </section>
+  </div>
+</header><!-- /header -->
+<hr>
+
+<%= @user.nickname %>さんが予想した試合
+
+  <ul id="list-module">
+    <% @forecasts.each do |forecast| %>
+      <li class="col-md-4" style="list-style:none;">
+        <%= render partial: "users/forecast", locals:{forecast:forecast} %>
+      </li>
+    <% end %>
+  </ul>
+</div>

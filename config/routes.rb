@@ -8,7 +8,13 @@ Rails.application.routes.draw do
   end
   resources :comments, only: [:create, :destroy]
   resources :forecasts, only: [:new, :create, :edit, :update, :destroy]
-  resources :users, only: [:show,:edit,:update]
+  resources :users, only: [:show,:edit,:update] do
+    member do
+      get :following, :followers
+    end
+  end
+  resources :relationships, only: [:create, :destroy]
+  resources :likes, only: [:create, :destroy]
 
 
   # The priority is based upon order of creation: first created -> highest priority.

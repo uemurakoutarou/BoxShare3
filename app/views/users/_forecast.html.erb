@@ -1,0 +1,40 @@
+
+<script>
+//グラフ
+var doughnutData = [
+  {
+    value: <%= Forecast.where(fight_id: forecast.fight, support: forecast.fight.player_A).count %>,
+    color:"#9bcad0",
+    highlight: "#a7d7de",
+    label: "<%= forecast.fight.player_A %>"
+  },
+  {
+    value: <%= Forecast.where(fight_id: forecast.fight, support: forecast.fight.player_B).count %>,
+    color: "#d5a87f",
+    highlight: "#e4b68a",
+    label: "<%= forecast.fight.player_B %>"
+  },
+  {
+    value: <%= Forecast.where(fight_id: forecast.fight, support: "ドロー").count %>,
+    color: "#edef9c",
+    highlight: "#fcfea6",
+    label: "ドロー"
+  }
+];
+window.onload = function(){
+  var ctx = document.getElementById("chart").getContext("2d");
+  window.myDoughnut = new Chart(ctx).Doughnut(doughnutData, {
+    responsive : true
+  });
+}
+</script>
+
+
+<div class="card">
+  <p><%= link_to "#{forecast.fight.player_A} VS #{forecast.fight.player_B}", new_forecast_path(fight_id: forecast.fight.id) %></p>
+  <div style="width: 30%">
+    <canvas id="chart"></canvas>
+  </div><br>
+  <p class="badge"><%= forecast.support %>を支持</p>
+  <%= simple_format (forecast.detail) %>
+</div>
