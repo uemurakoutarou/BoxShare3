@@ -1,0 +1,4 @@
+
+<%= form_for(comment.likes.find_by(user_id: current_user.id), method: :delete, remote: true) do |f| %>
+  <%= f.submit "いいね！を取り消す", class: "btn btn-default pull-right" %>
+<% end %>

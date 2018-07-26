@@ -1,0 +1,8 @@
+
+<div id="like_form">
+  <% if comment.like?(current_user) %>
+    <%= render partial: "likes/unlike", locals:{comment: comment} %>
+  <% else %>
+    <%= render partial: "likes/like", locals:{comment: comment} %>
+  <% end %>
+</div>
