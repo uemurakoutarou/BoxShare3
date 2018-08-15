@@ -9,7 +9,7 @@
     <p><%= simple_format(@fight.detail) %></p>
     <%= form_tag(new_forecast_path, method: :get) do %>
       <%= hidden_field_tag(:fight_id, @fight.id) %>
-      <%= submit_tag("予想一覧へ", class: "btn btn-default") %>
+      <%= submit_tag("予想一覧へ", class: "btn btn-light") %>
     <% end %>
     <br>
   </div>

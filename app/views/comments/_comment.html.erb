@@ -5,11 +5,11 @@
     <small><%= simple_format (comment.comment) %></small>
   </div>
   <div class="pull-right">
-      いいねの数<span class="badge"><%= comment.likes.count %></span>
     <% if user_signed_in? %>
       <%= render partial: "likes/like_form", locals:{comment: comment} %>
     <% end %>
   </div>
+  <hr>
 <% end %>
 
 <!-- コメント部分 -->
@@ -21,10 +21,10 @@
         <%= hidden_field_tag :fight_id, @fight.id %>
         <%= hidden_field_tag :user_id, current_user.id %>
         <%= f.text_area :comment, placeholder: "コメントする", size:"30x2", class: "form-control" %>
-        <%= f.submit "コメント" ,class: "btn btn-warning col-xs-12" %>
+        <%= f.submit "コメント" ,class: "btn btn-warning col-12" %>
       <% end %>
     </div>
   <% else %>
-    <p class="text-center" style="color: #FFF">★<%= link_to "会員登録", new_user_registration_path %>、あるいは<%= link_to "ログイン", new_user_session_path %>するとコメントができます。★</p>
+    <p class="text-center">★<%= link_to "会員登録", new_user_registration_path %>、あるいは<%= link_to "ログイン", new_user_session_path %>するとコメントができます。★</p>
   <% end %>
 </div>

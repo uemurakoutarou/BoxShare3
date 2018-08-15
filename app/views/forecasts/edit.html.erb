@@ -56,7 +56,7 @@ window.onload = function(){
       引き分け<%= f.radio_button :support, "ドロー" %>
       <%= f.text_area :detail, placeholder: "コメントする", size:"30x10", class: "form-control" %>
       <%= f.hidden_field :fight_id %>
-      <%= f.submit "予想する", size:"30x10", class: "btn btn-warning col-xs-12" %>
+      <%= f.submit "予想する", size:"30x10", class: "btn btn-warning col-12" %>
     <% end %>
   <% else %>
     <p class="text-center" style="color: #FFF">★<%= link_to "会員登録", new_user_registration_path %>、あるいは<%= link_to "ログイン", new_user_session_path %>すると投稿できます。★</p>

@@ -1,14 +1,11 @@
 <div class="col-md-4" style="list-style:none;">
   <div class="card">
-    <div class="caption">
+    <div class="card-body">
       <h3><%= link_to "#{fight.player_A} VS #{fight.player_B}", fight_path(fight) %></h3>
-      <small>in <%= fight.place %></small>
-      <ul class="list-inline">
-        <li class="list-group-item text-muted">
-          <span class="badge"><%= fight.forecasts.count %></span>
-          予想数
-        </li>
-      </ul>
+      <small>in <%= fight.place %></small><br>
+      <div class="btn btn-secondary">
+        予想数<span class="badge badge-light"><%= fight.forecasts.count %></span>
+      </div>
     </div>
   </div>
 </div>

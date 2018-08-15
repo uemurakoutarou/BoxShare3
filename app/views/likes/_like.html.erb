@@ -1,5 +1,5 @@
 
 <%= form_for(comment.likes.build, remote: true) do |f| %>
   <%= hidden_field_tag :comment_id, comment.id %>
-  <%= f.submit "いいね！", class: "btn btn-success pull-right" %>
+  <%= f.submit "いいね！", class: "btn btn-success" %>
 <% end %>
