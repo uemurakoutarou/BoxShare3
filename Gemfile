@@ -49,6 +49,5 @@ gem 'mechanize'
 gem 'pry-rails'
 gem 'devise'
 gem 'paperclip'
-gem "bootstrap", "~> 4.1.1"
 
 
