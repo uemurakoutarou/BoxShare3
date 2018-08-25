@@ -30,7 +30,7 @@ window.onload = function(){
 </script>
 
 
-<div class="card">
+<div class="card col-lg-4">
   <p><%= link_to "#{forecast.fight.player_A} VS #{forecast.fight.player_B}", new_forecast_path(fight_id: forecast.fight.id) %></p>
   <div style="width: 30%">
     <canvas id="chart"></canvas>

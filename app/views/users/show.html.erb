@@ -21,12 +21,7 @@
 <hr>
 
 <%= @user.nickname %>さんが予想した試合
-
-  <ul id="list-module">
-    <% @forecasts.each do |forecast| %>
-      <li class="col-md-4" style="list-style:none;">
-        <%= render partial: "users/forecast", locals:{forecast:forecast} %>
-      </li>
-    <% end %>
-  </ul>
+  <% @forecasts.each do |forecast| %>
+    <%= render partial: "users/forecast", locals:{forecast:forecast} %>
+  <% end %>
 </div>
