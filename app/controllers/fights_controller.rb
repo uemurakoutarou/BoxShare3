@@ -8,6 +8,11 @@ class FightsController < ApplicationController
     @fight = Fight.find(params[:id])
     @comments = @fight.comments.includes(:fight).order("comments.created_at DESC")
     @comment = Comment.new
+    @judges = @fight.judges.includes(:fight)
+    @judge = Judge.new
+    if user_signed_in?
+      @user_judges = @judges.where(user_id: current_user.id, fight_id: @fight.id)
+    end
   end
 
   def new

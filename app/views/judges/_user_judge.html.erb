@@ -1,0 +1,67 @@
+
+
+<table class="table table-bordered table-sm">
+  <thead class="thead-light">
+    <tr class="active">
+      <th class="text-left"><%= @fight.player_A %></th>
+      <th class="text-center">R</th>
+      <th class="text-right"><%= @fight.player_B %></th>
+    </tr>
+  </thead>
+  <% user_judges = @judges.where(user_id: current_user.id, fight_id: @fight.id) %>
+  <% user_judges.each do |judges| %>
+  <tbody>
+    <% if judges.range > 0 %>
+      <tr>
+        <th class="text-left"><%= 10 - judges.range %></th>
+        <th class="text-center"><%= judges.round %></th>
+        <th class="text-right table-primary">10</th>
+      </tr>
+    <% elsif judges.range < 0 %>
+      <tr>
+        <th class="text-left table-danger">10</th>
+        <th class="text-center"><%= judges.round %></th>
+        <th class="text-right"><%= 10 - (-1 * judges.range) %></th>
+      </tr>
+    <% else %>
+      <tr>
+        <th class="text-left">10</th><th class="text-center"><%= judges.round %></th><th class="text-right">10</th>
+      </tr>
+    <% end %>
+  </tbody>
+  <% end %>
+</table>
+
+<div class="text-center" style="color: #FFF">
+  <% point_A = 0 %>
+  <% point_B = 0 %>
+  <% num = 0 %>
+  <% judges_point = @judges.pluck(:range) %>
+  <% while num < judges_point.count do %>
+    <% if judges_point[num] >= 0 %>
+      <% point_A = point_A + (10 - judges_point[num]) %>
+      <% point_B = point_B + 10 %>
+    <% elsif judges_point[num] < 0 %>
+      <% point_A = point_A + 10 %>
+      <% point_B = point_B + (10 - (-1 * judges_point[num])) %>
+    <% end %>
+    <% num += 1 %>
+  <% end %>
+  <h5>Total you scored<br>(<%= @fight.player_A %>)<%= point_A %> - <%= point_B %>(<%= @fight.player_B %>)</h5>
+<!-- ここから入力 -->
+  <h4 name="round" id="round"><%= "#{}ラウンド" %>を採点する</h4>
+  <%= form_for(@judge) do |f| %>
+
+    <%= f.hidden_field :round %><!-- 何かを入れる -->
+
+    <%= f.hidden_field :fight_id, value: @fight.id %>
+    <!-- バーの部分 -->
+    <!-- <output id="output1">0</output> -->
+    <!-- <input name="range" type="range" class="input-range" value="0" min="-4" max="4" step="1" oninput="document.getElementById('output1').value=this.value"> -->
+    <%= f.range_field :range, value: 0, min: -4, max: 4, step: 1, class: "input-range" %>
+    <!-- バー部分終わり -->
+    <%= f.submit "採点する" ,class: "btn btn-warning col-12" %>
+  <% end %>
+</div>
+<!-- コメント部分終わり -->
+
