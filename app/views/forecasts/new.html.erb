@@ -7,7 +7,7 @@
       <!-- 削除 -->
     <% end %>
     <p><%= simple_format(@fight.detail) %></p>
-    <div class="btn btn-light"><%= link_to "採点一覧へ", fight_path(@fight) %></div><br>
+    <div class="btn btn-light"><%= link_to "採点一覧へ", fight_path(@fight.id) %></div><br>
     <br>
   </div>
 </header>
@@ -43,7 +43,7 @@ window.onload = function(){
 </script>
 
 <div class="text-center">
-  <h4><span class="badge"><%= @forecasts.count %> Forecasts</span></h4>
+  <h4><span class="badge">予想数<%= @forecasts.count %></span></h4>
   <% if user_signed_in? %>
     <% my_detail = Forecast.find_by(user_id: current_user.id, fight_id: @fight) %>
     <% if my_detail.blank? %>

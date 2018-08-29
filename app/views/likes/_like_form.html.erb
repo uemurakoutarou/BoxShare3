@@ -1,11 +1,9 @@
 
 <div id="like_<%= comment.id %>">
-  いいねの数<span class="badge"><%= comment.likes.count %></span>
-  <div class="">
     <% if comment.like?(current_user) %>
       <%= render partial: "likes/unlike", locals:{comment: comment} %>
     <% else %>
       <%= render partial: "likes/like", locals:{comment: comment} %>
     <% end %>
-  </div>
+  いいねの数<span class="badge"><%= comment.likes.count %></span>
 </div>

@@ -20,8 +20,22 @@
 </header><!-- /header -->
 <hr>
 
-<%= @user.nickname %>さんが予想した試合
-  <% @forecasts.each do |forecast| %>
-    <%= render partial: "users/forecast", locals:{forecast:forecast} %>
-  <% end %>
+
+<ul class="nav nav-tabs">
+  <li class="nav-item"><a class="nav-link active" href="#sampleContentB" data-toggle="tab">採点した試合</a></li>
+  <li class="nav-item"><a class="nav-link" href="#sampleContentC" data-toggle="tab">予想した試合</a></li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane active" id="sampleContentB">
+    <% @judge.each do |fight| %>
+      <%= render partial: "users/judge", locals:{fight:fight} %>
+    <% end %>
+  </div>
+
+  <div class="tab-pane" id="sampleContentC">
+    <% @forecasts.each do |forecast| %>
+      <%= render partial: "users/forecast", locals:{forecast:forecast} %>
+    <% end %>
+  </div>
 </div>

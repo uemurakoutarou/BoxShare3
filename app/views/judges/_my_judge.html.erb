@@ -1,7 +1,6 @@
 
-
 <table class="table table-bordered table-hover table-sm">
-  <caption><%= comment.user.nickname %>さんの採点表</caption>
+  <caption><%= current_user.nickname %>さんの採点表</caption>
   <thead class="thead-light">
     <tr class="active">
       <th class="text-left"><%= @fight.player_A %></th>
@@ -9,7 +8,7 @@
       <th class="text-right"><%= @fight.player_B %></th>
     </tr>
   </thead>
-  <% user_judges = @judges.where(user_id: comment.user.id, fight_id: @fight.id) %>
+  <% user_judges = @judges.where(user_id: current_user.id, fight_id: @fight.id) %>
   <% user_judges.each do |judges| %>
   <tbody class="table-light">
     <% if judges.range > 0 %>
@@ -19,7 +18,7 @@
         <th class="text-right table-primary">10</th>
       </tr>
     <% elsif judges.range < 0 %>
-      <tr>
+      <tr >
         <th class="text-left table-danger">10</th>
         <th class="text-center"><%= judges.round %></th>
         <th class="text-right"><%= 10 - (-1 * judges.range) %></th>
@@ -49,5 +48,19 @@
     <% num += 1 %>
   <% end %>
   <h5>Total you scored<br>(<%= @fight.player_A %>)<%= point_A %> - <%= point_B %>(<%= @fight.player_B %>)</h5>
-</div>
 
+<!-- ここから入力 -->
+  <% hidden_round_row = @judges.where(user_id: current_user.id, fight_id: @fight.id).maximum(:round) %>
+  <% if hidden_round_row.present? %>
+    <% if hidden_round_row < @fight.all_round %>
+      <% hidden_round = hidden_round_row + 1 %>
+      <%= render partial: "judges/form", locals:{hidden_round: hidden_round} %>
+    <% elsif hidden_round_row >= @fight.all_round %>
+      <h4 name="round" id="round" class="btn btn-warning col-12">採点終了</h4>
+    <% end %>
+  <% else %>
+    <% hidden_round = 1 %>
+    <%= render partial: "judges/form", locals:{hidden_round: hidden_round} %>
+  <% end %>
+</div>
+<!-- コメント部分終わり -->

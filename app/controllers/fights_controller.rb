@@ -6,6 +6,7 @@ class FightsController < ApplicationController
 
   def show
     @fight = Fight.find(params[:id])
+    @user = @fight.users.uniq
     @comments = @fight.comments.includes(:fight).order("comments.created_at DESC")
     @comment = Comment.new
     @judges = @fight.judges.includes(:fight)

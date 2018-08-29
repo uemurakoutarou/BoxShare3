@@ -18,14 +18,23 @@
 <hr class="style3">
 
 <% @comments.each do |comment| %>
-  <div class="pull-left">
+  <div class="float-left">
     <h4><%= link_to comment.user.nickname, user_path(comment.user) %></h4>
     <small><%= simple_format (comment.comment) %></small>
   </div>
-  <div class="pull-right">
+  <div class="float-right">
     <% if user_signed_in? %>
       <%= render partial: "likes/like_form", locals:{comment: comment} %>
     <% end %>
+  </div>
+  <br>
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#judges<%= comment.user.id %>"><%= comment.user.nickname %>さんの採点表を見る</button>
+  <div class="modal fade" id="judges<%= comment.user.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content box-footer-in">
+        <%= render partial: "judges/user_judge", locals:{comment: comment} %>
+      </div>
+    </div>
   </div>
   <hr>
 <% end %>

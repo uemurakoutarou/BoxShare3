@@ -6,7 +6,7 @@ class JudgesController < ApplicationController
   def create
     if user_signed_in?
       Judge.create(create_params)
-      @fight = Fight.find(params[:fight_id])
+      @fight = Fight.find(params[:judge][:fight_id])
       redirect_to fight_path(@fight)
       @comments = Comment.all
       @judges = @fight.judges.includes(:fight)

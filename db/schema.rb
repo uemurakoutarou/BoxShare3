@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180825135017) do
+ActiveRecord::Schema.define(version: 20180829130758) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "user_id",    limit: 4
@@ -22,7 +22,6 @@ ActiveRecord::Schema.define(version: 20180825135017) do
   end
 
   create_table "fights", force: :cascade do |t|
-    t.string   "name",       limit: 255
     t.date     "date"
     t.string   "place",      limit: 255
     t.string   "player_A",   limit: 255
@@ -44,14 +43,12 @@ ActiveRecord::Schema.define(version: 20180825135017) do
   end
 
   create_table "judges", force: :cascade do |t|
-    t.integer  "user_id",        limit: 4
-    t.integer  "fight_id",       limit: 4
-    t.integer  "round",          limit: 4
-    t.integer  "player_A_point", limit: 4
-    t.integer  "player_B_point", limit: 4
-    t.integer  "range",          limit: 4
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.integer  "user_id",    limit: 4
+    t.integer  "fight_id",   limit: 4
+    t.integer  "round",      limit: 4
+    t.integer  "range",      limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "likes", force: :cascade do |t|

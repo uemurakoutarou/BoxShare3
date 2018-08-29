@@ -3,6 +3,7 @@ class Fight < ActiveRecord::Base
   has_many :comments, dependent: :destroy
   has_many :forecasts, dependent: :destroy
   has_many :judges, dependent: :destroy
+  has_many :users, through: :judges, dependent: :destroy
 
   validates :date, :player_A, :player_B, :all_round, presence: true
 end

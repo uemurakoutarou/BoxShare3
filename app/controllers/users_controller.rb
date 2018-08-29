@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :move_to_index, only: :edit
   def show
     @user = User.find(params[:id])
-    @round = @user.fights.uniq
+    @judge = @user.fights.uniq
     @forecasts = @user.forecasts.includes(:user)
   end
 

@@ -1,6 +1,6 @@
 
 <h4><%= link_to forecast.user.nickname, user_path(forecast.user) %></h4>
-<p class="badge"><%= forecast.support %>を支持</p>
+<p class="badge badge-warning"><%= forecast.support %>を支持</p>
 <%= simple_format (forecast.detail) %>
 <% if user_signed_in? && forecast.user_id == current_user.id %>
   <small><%= link_to "編集する", edit_forecast_path(@fight.forecasts, fight_id: @fight.id) %></small>

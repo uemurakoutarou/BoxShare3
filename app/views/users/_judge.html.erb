@@ -1,0 +1,66 @@
+
+<div class="card col-lg-4">
+  <h4 class="text-center"><%= link_to "#{fight.player_A} VS #{fight.player_B}", fight_path(fight.id) %></h4>
+
+  <a data-toggle="collapse" href="#round<%= fight.id %>">
+    <h5 class="btn btn-light col-12">Score Card</h5>
+  </a>
+
+  <div id="round<%= fight.id %>" class="collapse">
+    <hr class="style3">
+    <table class="table table-bordered table-sm">
+      <thead class="thead-light">
+        <tr class="active">
+          <th><%= fight.player_A %></th>
+          <th class="text-center">R</th>
+          <th class="text-right"><%= fight.player_B %></th>
+        </tr>
+      </thead>
+      <% user_judge = fight.judges.includes(:fight).where(user_id: @user.id).order("judges.round ASC") %>
+      <% user_judge.each do |judge| %>
+        <tbody class="table-light">
+          <% if judge.range > 0 %>
+            <tr>
+              <th><%= 10 - judge.range %></th>
+              <th class="text-center"><%= judge.round %></th>
+              <th class="text-right table-primary">10</th>
+            </tr>
+          <% elsif judge.range < 0 %>
+            <tr>
+              <th class="table-danger">10</th>
+              <th class="text-center"><%= judge.round %></th>
+              <th class="text-right"><%= 10 - (-1 * judge.range) %></th>
+            </tr>
+          <% else %>
+            <tr>
+              <th>10</th>
+              <th class="text-center"><%= judge.round %></th>
+              <th class="text-right">10</th>
+            </tr>
+          <% end %>
+        </tbody>
+      <% end %>
+    </table>
+    <% judges_point = user_judge.pluck(:range) %>
+    <% point_A = 0 %>
+    <% point_B = 0 %>
+    <% num = 0 %>
+    <% while num < judges_point.count do %>
+      <% if judges_point[num] >= 0 %>
+        <% point_A = point_A + (10 - judges_point[num]) %>
+        <% point_B = point_B + 10 %>
+      <% elsif judges_point[num] < 0 %>
+        <% point_A = point_A + 10 %>
+        <% point_B = point_B + (10 - (-1 * judges_point[num])) %>
+      <% end %>
+      <% num += 1 %>
+    <% end %>
+  </div>
+
+  <h5 class="text-center">
+    Total scored<br>
+    <small>(<%= fight.player_A %>)</small>
+    <%= point_A %> - <%= point_B %>
+    <small>(<%= fight.player_B %>)</small>
+  </h5>
+</div>

@@ -1,0 +1,12 @@
+
+<h4 name="round" id="round"><%= hidden_round %>ラウンドを採点する</h4>
+<%= form_for(@judge) do |f| %>
+  <%= f.hidden_field :round, value: hidden_round %>
+  <%= f.hidden_field :fight_id, value: @fight.id %>
+  <!-- バーの部分 -->
+  <!-- <output id="output1">0</output> -->
+  <!-- <input name="range" type="range" class="input-range" value="0" min="-4" max="4" step="1" oninput="document.getElementById('output1').value=this.value"> -->
+  <%= f.range_field :range, value: 0, min: -4, max: 4, step: 1, class: "input-range" %>
+  <!-- バー部分終わり -->
+  <%= f.submit "採点する" ,class: "btn btn-warning col-12" %>
+<% end %>
