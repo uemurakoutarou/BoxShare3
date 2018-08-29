@@ -23,18 +23,24 @@
 <% if user_signed_in? %>
   <button type="button" class="btn btn-warning col-12" data-toggle="modal" data-target="#myModal"><big>採点する</big></button>
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content box-footer-in">
         <%= render partial: "judges/my_judge" %>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary col-12" data-dismiss="modal">閉じる</button>
+        </div>
       </div>
     </div>
   </div>
 <% else %>
   <button type="button" class="btn btn-warning col-12" data-toggle="modal" data-target="#myModal"><big>採点する</big></button>
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content box-footer-in">
         <p class="text-center" style="color: #FFF">★<%= link_to "会員登録", new_user_registration_path %>、あるいは<%= link_to "ログイン", new_user_session_path %>するとコメントができます。★</p>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary col-12" data-dismiss="modal">閉じる</button>
+        </div>
       </div>
     </div>
   </div>
