@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @judge = @user.fights.uniq
-    @forecasts = @user.forecasts.includes(:user)
+    @forecasts = @user.forecasts.includes(:user).order("updated_at DESC")
   end
 
   def edit
