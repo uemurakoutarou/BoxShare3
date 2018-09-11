@@ -1,10 +1,10 @@
 
 <!-- コメント部分 -->
-<div class="">
+<div id="comment_text" class="">
   <% if user_signed_in? %>
     <div class="text-center" style="color: #FFF">
     <!-- ここから入力 -->
-      <%= form_for(@comment) do |f| %>
+      <%= form_for @comment, remote: true do |f| %>
         <%= hidden_field_tag :fight_id, @fight.id %>
         <%= hidden_field_tag :user_id, current_user.id %>
         <%= f.text_area :comment, placeholder: "コメントする", size:"30x2", class: "form-control" %>
@@ -18,26 +18,5 @@
 <hr class="style3">
 
 <% @comments.each do |comment| %>
-  <div class="float-left">
-    <h4><%= link_to comment.user.nickname, user_path(comment.user) %></h4>
-    <small><%= simple_format (comment.comment) %></small>
-  </div>
-  <div class="float-right">
-    <% if user_signed_in? %>
-      <%= render partial: "likes/like_form", locals:{comment: comment} %>
-    <% end %>
-  </div>
-  <br>
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#judges<%= comment.user.id %>"><%= comment.user.nickname %>さんの採点表を見る</button>
-  <div class="modal fade" id="judges<%= comment.user.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content box-footer-in">
-        <%= render partial: "judges/user_judge", locals:{comment: comment} %>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary col-12" data-dismiss="modal">閉じる</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <hr>
+  <%= render partial: "comments/comment_texts", locals:{comment: comment} %>
 <% end %>

@@ -1,7 +1,4 @@
 class JudgesController < ApplicationController
-  def new
-    
-  end
 
   def create
     if user_signed_in?
