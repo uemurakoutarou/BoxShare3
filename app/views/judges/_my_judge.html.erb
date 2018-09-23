@@ -1,6 +1,6 @@
 
 <table class="table table-bordered table-hover table-sm">
-  <caption><%= current_user.nickname %>さんの採点表</caption>
+  <caption><%= link_to current_user.nickname, user_path(current_user) %>さんの採点表</caption>
   <thead class="thead-light">
     <tr class="active">
       <th class="text-left"><%= @fight.player_A %></th>

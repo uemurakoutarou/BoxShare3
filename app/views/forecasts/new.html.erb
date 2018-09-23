@@ -51,6 +51,19 @@ window.onload = function(){
           <%= @fight.player_A %>の勝利<%= f.radio_button :support, "#{@fight.player_A}" %>
           <%= @fight.player_B %>の勝利<%= f.radio_button :support, "#{@fight.player_B}" %>
           引き分け<%= f.radio_button :support, "ドロー" %>
+<!-- 予想のボタン（bootstrap）
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-secondary active">
+              <input type="radio" name="support" id="#{@fight.player_A}" autocomplete="off"" checked> <%= @fight.player_A %>の勝利
+            </label>
+            <label class="btn btn-secondary">
+              <input type="radio" name="support" id="#{@fight.player_B}" autocomplete="off"> <%= @fight.player_B %>の勝利
+            </label>
+            <label class="btn btn-secondary">
+              <input type="radio" name="support" id="#{ドロー}" autocomplete="off"> 引き分け
+            </label>
+          </div> -->
+
           <%= f.text_area :detail, placeholder: "コメントする", size:"30x10", class: "form-control" %>
           <%= f.hidden_field :fight_id %>
           <%= f.submit "予想する", size:"30x10", class: "btn btn-warning col-12" %>
@@ -63,24 +76,26 @@ window.onload = function(){
   <% else %>
     <p class="text-center">★<%= link_to "会員登録", new_user_registration_path %>、あるいは<%= link_to "ログイン", new_user_session_path %>すると投稿できます。★</p>
   <% end %>
+</div>
 
-    <hr class="style3">
+<hr class="style3">
 <!--
-    <ul class="graph">
-      <li class="percent20">20%</li>
-      <li class="percent40">40%</li>
-      <li class="percent60">60%</li>
-      <li class="percent80">80%</li>
-      <li class="percent100">100%</li>
-    </ul> -->
+<ul class="graph">
+  <li class="percent20">20%</li>
+  <li class="percent40">40%</li>
+  <li class="percent60">60%</li>
+  <li class="percent80">80%</li>
+  <li class="percent100">100%</li>
+</ul> -->
 
-    <div style="width: 70%">
-      <canvas id="chart"></canvas>
-    </div>
+<div style="width: 70%">
+  <canvas id="chart"></canvas>
+</div>
 
-    <small>コメント一覧</small>
-    <hr class="style-two">
-    <% @real_forecast.each do |forecast| %>
-      <%= render partial: "forecasts/forecast", locals:{forecast:forecast} %>
-    <% end %>
+<div class="card col-lg-4">
+  <small class="text-center">コメント一覧</small>
+  <hr class="style3">
+  <% @real_forecast.each do |forecast| %>
+    <%= render partial: "forecasts/forecast", locals:{forecast:forecast} %>
+  <% end %>
 </div>

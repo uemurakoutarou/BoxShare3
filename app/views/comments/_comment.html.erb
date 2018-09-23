@@ -8,7 +8,7 @@
         <%= hidden_field_tag :fight_id, @fight.id %>
         <%= hidden_field_tag :user_id, current_user.id %>
         <%= f.text_area :comment, placeholder: "コメントする", size:"30x2", class: "form-control" %>
-        <%= f.submit "コメント" ,class: "btn btn-warning col-12" %>
+        <%= f.submit "コメント" ,class: "btn btn-warning btn-sm col-12" %>
       <% end %>
     </div>
   <% else %>

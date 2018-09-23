@@ -1,7 +1,7 @@
 
 
 <table class="table table-bordered table-hover table-sm">
-  <caption><%= comment.user.nickname %>さんの採点表</caption>
+  <caption><%= link_to comment.user.nickname, user_path(comment.user) %>さんの採点表</caption>
   <thead class="thead-light">
     <tr class="active">
       <th class="text-left"><%= @fight.player_A %></th>
