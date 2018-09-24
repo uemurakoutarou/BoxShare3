@@ -9038,8 +9038,8 @@ a.text-dark:hover, a.text-dark:focus {
 /*レイアウトあたり*/
 .backcolor-body {
   background-color: #EEEEEE;
-  padding-top: 7.0rem;
-  padding-bottom: 270px;
+  padding-top: 50px;
+  padding-bottom: 0px;
 }
 
 .color-ori {

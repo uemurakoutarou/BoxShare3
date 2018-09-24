@@ -43,7 +43,7 @@ window.onload = function(){
 </script>
 
 <div class="text-center">
-  <h4><span class="badge">予想数<%= @forecasts.count %></span></h4>
+  <h5 class="badge badge-pill badge-secondary">予想数 <span class="badge badge-light"><%= @forecasts.count %></span></h5>
   <% if user_signed_in? %>
     <% my_detail = Forecast.find_by(user_id: current_user.id, fight_id: @fight) %>
     <% if my_detail.blank? %>
