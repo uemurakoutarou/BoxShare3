@@ -1,38 +1,15 @@
 
 <table class="table table-bordered table-hover table-sm">
   <caption><%= link_to current_user.nickname, user_path(current_user) %>さんの採点表</caption>
-  <thead class="thead-light">
-    <tr class="active">
+  <thead class="table-light">
+    <tr class="table-secondary">
       <th class="text-left"><%= @fight.player_A %></th>
       <th class="text-center">R</th>
       <th class="text-right"><%= @fight.player_B %></th>
     </tr>
   </thead>
   <% user_judges = @judges.where(user_id: current_user.id, fight_id: @fight.id) %>
-  <% user_judges.each do |judges| %>
-  <tbody class="table-light">
-    <% if judges.range > 0 %>
-      <tr>
-        <th class="text-left"><%= 10 - judges.range %></th>
-        <th class="text-center"><%= judges.round %></th>
-        <th class="text-right table-primary">10</th>
-      </tr>
-    <% elsif judges.range < 0 %>
-      <tr >
-        <th class="text-left table-danger">10</th>
-        <th class="text-center"><%= judges.round %></th>
-        <th class="text-right"><%= 10 - (-1 * judges.range) %></th>
-      </tr>
-    <% else %>
-      <tr>
-        <th class="text-left">10</th><th class="text-center"><%= judges.round %></th><th class="text-right">10</th>
-      </tr>
-    <% end %>
-  </tbody>
-  <% end %>
-</table>
-
-<div class="text-center" style="color: #FFF">
+<!-- トータルの計算 -->
   <% point_A = 0 %>
   <% point_B = 0 %>
   <% num = 0 %>
@@ -47,9 +24,53 @@
     <% end %>
     <% num += 1 %>
   <% end %>
-  <h5>Total you scored<br>(<%= @fight.player_A %>)<%= point_A %> - <%= point_B %>(<%= @fight.player_B %>)</h5>
+<!-- 計算終わり -->
+  <tbody class="table-light">
+    <% user_judges.each do |judges| %>
+      <% if judges.range > 0 %>
+        <tr>
+          <th class="text-left"><%= 10 - judges.range %></th>
+          <th class="text-center"><%= judges.round %></th>
+          <th class="text-right table-primary">10</th>
+        </tr>
+      <% elsif judges.range < 0 %>
+        <tr >
+          <th class="text-left table-danger">10</th>
+          <th class="text-center"><%= judges.round %></th>
+          <th class="text-right"><%= 10 - (-1 * judges.range) %></th>
+        </tr>
+      <% else %>
+        <tr>
+          <th class="text-left">10</th>
+          <th class="text-center"><%= judges.round %></th>
+          <th class="text-right">10</th>
+        </tr>
+      <% end %>
+    <% end %>
+    <% if point_A > point_B %>
+      <tr class="">
+        <th class="text-left table-danger"><%= point_A %></th>
+        <th class="text-center table-secondary">Total you Score</th>
+        <th class="text-right"><%= point_B %></th>
+      </tr>
+    <% elsif point_A < point_B %>
+      <tr class="">
+        <th class="text-left"><%= point_A %></th>
+        <th class="text-center table-secondary">Total you Score</th>
+        <th class="text-right table-primary"><%= point_B %></th>
+      </tr>
+    <% else %>
+      <tr class="">
+        <th class="text-left table-secondary"><%= point_A %></th>
+        <th class="text-center table-secondary">Total you Score</th>
+        <th class="text-right table-secondary"><%= point_B %></th>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <!-- ここから入力 -->
+<div class="text-center" style="color: #FFF">
   <% hidden_round_row = @judges.where(user_id: current_user.id, fight_id: @fight.id).maximum(:round) %>
   <% if hidden_round_row.present? %>
     <% if hidden_round_row < @fight.all_round %>

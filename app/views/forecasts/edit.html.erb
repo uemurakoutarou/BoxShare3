@@ -20,14 +20,14 @@
 var doughnutData = [
   {
     value: <%= Forecast.where(fight_id: @fight, support: @fight.player_A).count %>,
-    color:"#9bcad0",
-    highlight: "#a7d7de",
+    color:"red",
+    highlight: "red",
     label: "<%= @fight.player_A %>"
   },
   {
     value: <%= Forecast.where(fight_id: @fight, support: @fight.player_B).count %>,
-    color: "#d5a87f",
-    highlight: "#e4b68a",
+    color: "blue",
+    highlight: "blue",
     label: "<%= @fight.player_B %>"
   },
   {
@@ -48,7 +48,7 @@ window.onload = function(){
 
 <div class="text-center">
   <h3><%= @fight.player_A %> VS <%= @fight.player_B %></h3>
-  <h4><%= @forecasts.count %><small>Forecasts</small></h4>
+  <h5 class="badge badge-pill badge-secondary">予想数 <span class="badge badge-light"><%= @forecasts.count %></span></h5>
   <% if user_signed_in? %>
     <%= form_for(@forecast) do |f| %>
       <%= @fight.player_A %>の勝利<%= f.radio_button :support, "#{@fight.player_A}" %><br>
@@ -61,15 +61,17 @@ window.onload = function(){
   <% else %>
     <p class="text-center" style="color: #FFF">★<%= link_to "会員登録", new_user_registration_path %>、あるいは<%= link_to "ログイン", new_user_session_path %>すると投稿できます。★</p>
   <% end %>
+</div>
 
+<hr class="style3">
+<div style="width: 70%">
+  <canvas id="chart"></canvas>
+</div>
+<br>
+
+<div class="card col-lg-4">
+  <small class="text-center">コメント一覧</small>
   <hr class="style3">
-  <div style="width: 70%">
-    <canvas id="chart"></canvas>
-  </div>
-  <br>
-
-  <small>コメント一覧</small>
-  <hr class="style-two">
   <% @real_forecast.each do |forecast| %>
     <%= render partial: "forecasts/forecast", locals:{forecast:forecast} %>
   <% end %>

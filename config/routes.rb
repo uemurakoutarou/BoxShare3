@@ -6,7 +6,7 @@ Rails.application.routes.draw do
       get "search"
     end
   end
-  resources :judges, only:[:create,:update]
+  resources :judges, only:[:create]
   resources :comments, only: [:create, :destroy]
   resources :forecasts, only: [:new, :create, :edit, :update, :destroy]
   resources :users, only: [:show,:edit,:update] do

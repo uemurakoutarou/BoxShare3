@@ -20,7 +20,6 @@
       </div>
       <%= f.label "ラウンド数" %>
       <%= f.select :all_round, ["4", "5", "6", "7", "8", "9", "10", "11", "12"], {}, {class: 'form-control form_inline'} %>
-      <%= f.file_field :image, placeholder: "画像", class: "form-control form_inline" %>
       <%= f.text_area :detail, placeholder: "詳細", style: 'width: 100%;height: 300px;', class: "form-control" %>
       <%= f.submit "試合投稿", class: "btn btn-warning col-12" %>
     </div>

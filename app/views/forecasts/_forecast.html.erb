@@ -1,6 +1,14 @@
 
 <h5><%= link_to forecast.user.nickname, user_path(forecast.user) %></h5>
-<p class="badge badge-warning"><%= forecast.support %>を支持</p>
+
+<% if forecast.support == @fight.player_A %>
+  <p class="badge badge-danger"><%= forecast.support %>を支持</p>
+<% elsif forecast.support == @fight.player_B %>
+  <p class="badge badge-primary"><%= forecast.support %>を支持</p>
+<% elsif forecast.support == "ドロー" %>
+  <p class="badge badge-light"><%= forecast.support %>を支持</p>
+<% end %>
+
 <%= simple_format (forecast.detail) %>
 <% if user_signed_in? && forecast.user_id == current_user.id %>
   <small><%= link_to "編集する", edit_forecast_path(@fight.forecasts, fight_id: @fight.id) %></small>

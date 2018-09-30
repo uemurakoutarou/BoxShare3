@@ -7,7 +7,6 @@
   </a>
 
   <div id="round<%= fight.id %>" class="collapse">
-    <hr class="style3">
     <table class="table table-bordered table-sm">
       <thead class="thead-light">
         <tr class="active">
@@ -17,8 +16,24 @@
         </tr>
       </thead>
       <% user_judge = fight.judges.includes(:fight).where(user_id: @user.id).order("judges.round ASC") %>
-      <% user_judge.each do |judge| %>
-        <tbody class="table-light">
+<!-- トータルの計算 -->
+      <% judges_point = user_judge.pluck(:range) %>
+      <% point_A = 0 %>
+      <% point_B = 0 %>
+      <% num = 0 %>
+      <% while num < judges_point.count do %>
+        <% if judges_point[num] >= 0 %>
+          <% point_A = point_A + (10 - judges_point[num]) %>
+          <% point_B = point_B + 10 %>
+        <% elsif judges_point[num] < 0 %>
+          <% point_A = point_A + 10 %>
+          <% point_B = point_B + (10 - (-1 * judges_point[num])) %>
+        <% end %>
+        <% num += 1 %>
+      <% end %>
+<!-- 計算終わり -->
+      <tbody class="table-light">
+        <% user_judge.each do |judge| %>
           <% if judge.range > 0 %>
             <tr>
               <th><%= 10 - judge.range %></th>
@@ -38,27 +53,33 @@
               <th class="text-right">10</th>
             </tr>
           <% end %>
-        </tbody>
-      <% end %>
+        <% end %>
+        <% if point_A > point_B %>
+          <tr class="">
+            <th class="text-left table-danger"><%= point_A %></th>
+            <th class="text-center table-secondary">Total you Score</th>
+            <th class="text-right"><%= point_B %></th>
+          </tr>
+        <% elsif point_A < point_B %>
+          <tr class="">
+            <th class="text-left"><%= point_A %></th>
+            <th class="text-center table-secondary">Total you Score</th>
+            <th class="text-right table-primary"><%= point_B %></th>
+          </tr>
+        <% else %>
+          <tr class="">
+            <th class="text-left table-secondary"><%= point_A %></th>
+            <th class="text-center table-secondary">Total you Score</th>
+            <th class="text-right table-secondary"><%= point_B %></th>
+          </tr>
+        <% end %>
+      </tbody>
     </table>
-    <% judges_point = user_judge.pluck(:range) %>
-    <% point_A = 0 %>
-    <% point_B = 0 %>
-    <% num = 0 %>
-    <% while num < judges_point.count do %>
-      <% if judges_point[num] >= 0 %>
-        <% point_A = point_A + (10 - judges_point[num]) %>
-        <% point_B = point_B + 10 %>
-      <% elsif judges_point[num] < 0 %>
-        <% point_A = point_A + 10 %>
-        <% point_B = point_B + (10 - (-1 * judges_point[num])) %>
-      <% end %>
-      <% num += 1 %>
-    <% end %>
   </div>
 
+  <hr class="style3">
   <h5 class="text-center">
-    Total scored<br>
+    Total Score<br>
     <small>(<%= fight.player_A %>)</small>
     <%= point_A %> - <%= point_B %>
     <small>(<%= fight.player_B %>)</small>

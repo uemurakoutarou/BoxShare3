@@ -17,14 +17,14 @@
 var doughnutData = [
   {
     value: <%= Forecast.where(fight_id: @fight, support: @fight.player_A).count %>,
-    color:"#9bcad0",
-    highlight: "#a7d7de",
+    color:"red",
+    highlight: "red",
     label: "<%= @fight.player_A %>"
   },
   {
     value: <%= Forecast.where(fight_id: @fight, support: @fight.player_B).count %>,
-    color: "#d5a87f",
-    highlight: "#e4b68a",
+    color: "blue",
+    highlight: "blue",
     label: "<%= @fight.player_B %>"
   },
   {

@@ -4,14 +4,14 @@
 var doughnutData = [
   {
     value: <%= Forecast.where(fight_id: forecast.fight, support: forecast.fight.player_A).count %>,
-    color:"#9bcad0",
-    highlight: "#a7d7de",
+    color:"red",
+    highlight: "red",
     label: "<%= forecast.fight.player_A %>"
   },
   {
     value: <%= Forecast.where(fight_id: forecast.fight, support: forecast.fight.player_B).count %>,
-    color: "#d5a87f",
-    highlight: "#e4b68a",
+    color: "blue",
+    highlight: "blue",
     label: "<%= forecast.fight.player_B %>"
   },
   {
@@ -35,6 +35,12 @@ window.onload = function(){
   <div style="width: 30%">
     <canvas id="chart"></canvas>
   </div><br>
-  <p class="badge badge-warning"><%= forecast.support %>を支持</p>
+  <% if forecast.support == forecast.fight.player_A %>
+    <p class="badge badge-danger"><%= forecast.support %>を支持</p>
+  <% elsif forecast.support == forecast.fight.player_B %>
+    <p class="badge badge-primary"><%= forecast.support %>を支持</p>
+  <% elsif forecast.support == "ドロー" %>
+    <p class="badge badge-light"><%= forecast.support %>を支持</p>
+  <% end %>
   <%= simple_format (forecast.detail) %>
 </div>

@@ -22,7 +22,7 @@
 
 <div class="text-center">
   <% @user.followers.each do |user| %>
-    <%= link_to "#{user.nickname}", user_path(user) %>
+    <%= link_to "#{user.nickname}", user_path(user) %><br>
   <% end %>
 
   <h5><%= link_to "#{@user.nickname}さんのトップページへ", user_path(@user), {:class => "btn btn-light"} %></h5>
