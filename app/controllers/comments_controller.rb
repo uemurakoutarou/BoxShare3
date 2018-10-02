@@ -12,7 +12,7 @@ class CommentsController < ApplicationController
       Comment.create(comment_params)
       @fight = Fight.find(params[:fight_id])
       redirect_to fight_path(@fight)
-      @comments =Comment.all
+      # @comments = @fight.comments.includes(:fight)
     else
       redirect_to :root, alert: "投稿には会員登録が必要です"
     end

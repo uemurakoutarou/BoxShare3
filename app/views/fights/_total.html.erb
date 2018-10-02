@@ -1,0 +1,8 @@
+
+<%= round.round %>
+<%= @fight.player_A %>の支持数<%= @judges.where(fight_id: @fight.id, round: round.round, range: round.range < 0).count %>
+ドローの支持数<%= @judges.where(fight_id: @fight.id, round: round.round, range: round.range == 0).count %>
+<%= @fight.player_B %>の支持数<%= @judges.where(fight_id: @fight.id, round: round.round, range: round.range > 0).count %>
+
+
+<br>

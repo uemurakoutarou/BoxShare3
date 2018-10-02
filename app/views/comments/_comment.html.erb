@@ -1,8 +1,8 @@
 
 <!-- コメント部分 -->
-<div id="comment_text" class="">
+<div class="">
   <% if user_signed_in? %>
-    <div class="text-center" style="color: #FFF">
+    <div id="text" class="text-center" style="color: #FFF">
     <!-- ここから入力 -->
       <%= form_for @comment, remote: true do |f| %>
         <%= hidden_field_tag :fight_id, @fight.id %>
@@ -17,6 +17,8 @@
 </div>
 <hr class="style3">
 
+<div id="comment_text" class="">
 <% @comments.each do |comment| %>
   <%= render partial: "comments/comment_texts", locals:{comment: comment} %>
 <% end %>
+</div>

@@ -1,2 +1,2 @@
-// $("#memo_text").val(""); // 入力フォームを空欄にする処理
-$("#comment_text").html("<%= escape_javascript(render('comments/comment_texts')) %>");
+$("#text").val(""); // 入力フォームを空欄にする処理
+$("#comment_text").html("<%= escape_javascript(render('comments/comment_texts', comment: @comments)) %>");
