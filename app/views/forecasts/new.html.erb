@@ -7,42 +7,51 @@
       <!-- 削除 -->
     <% end %>
     <p><%= simple_format(@fight.detail) %></p>
-    <div class="btn btn-light"><%= link_to "採点一覧へ", fight_path(@fight.id) %></div><br>
+    <%= link_to "採点一覧へ", fight_path(@fight.id), class: "btn btn-light" %><br>
     <br>
   </div>
 </header>
 
+<% @forecast_A = @forecasts.where(fight_id: @fight, support: @fight.player_A).count %>
+<% @forecast_B = @forecasts.where(fight_id: @fight, support: @fight.player_B).count %>
+<% @forecast_draw = @forecasts.where(fight_id: @fight, support: "ドロー").count %>
+<% @forecast_all = (@forecast_draw + @forecast_A + @forecast_B) %>
 <script>
-//グラフ
-var doughnutData = [
-  {
-    value: <%= Forecast.where(fight_id: @fight, support: @fight.player_A).count %>,
-    color:"red",
-    highlight: "red",
-    label: "<%= @fight.player_A %>"
-  },
-  {
-    value: <%= Forecast.where(fight_id: @fight, support: @fight.player_B).count %>,
-    color: "blue",
-    highlight: "blue",
-    label: "<%= @fight.player_B %>"
-  },
-  {
-    value: <%= Forecast.where(fight_id: @fight, support: "ドロー").count %>,
-    color: "#edef9c",
-    highlight: "#fcfea6",
-    label: "ドロー"
-  }
-];
-window.onload = function(){
-  var ctx = document.getElementById("chart").getContext("2d");
-  window.myDoughnut = new Chart(ctx).Doughnut(doughnutData, {
-    responsive : true
+  var ctx = document.getElementById('chart<%= @fight.id %>');
+  var myBarChart = new Chart(ctx, {
+    type: 'horizontalBar',
+    borderWidth: 3,
+    data: {
+      datasets: [{
+        label: "<%= @fight.player_A %>",
+        data: [<%= @forecast_A.round(2) / @forecast_all.round(2) * 100 %>],
+        backgroundColor: "rgba(244, 143, 177, 0.6)"
+      },{
+        label: "ドロー",
+        data: [<%= @forecast_draw.round(2) / @forecast_all.round(2) * 100 %>],
+        backgroundColor: "rgba(255, 235, 59, 0.6)"
+      },{
+        label: "<%= @fight.player_B %>",
+        data: [<%= @forecast_B.round(2) / @forecast_all.round(2) * 100 %>],
+        backgroundColor: "rgba(100, 181, 246, 0.6)"
+      }]
+    },
+    options:{
+      scales:{
+        xAxes:[{
+          stacked: true
+        }],
+        yAxes:[{
+          stacked: true
+        }]
+      }
+    }
   });
-}
 </script>
 
 <div class="text-center">
+  <h5 class="badge badge-pill badge-secondary">採点数 <span class="badge badge-light"><%= @fight.judges.select(:user_id).distinct.count %></span></h5>
+  <h5 class="badge badge-pill badge-secondary">コメント数 <span class="badge badge-light"><%= @fight.comments.count %></span></h5>
   <h5 class="badge badge-pill badge-secondary">予想数 <span class="badge badge-light"><%= @forecasts.count %></span></h5>
   <% if user_signed_in? %>
     <% my_detail = Forecast.find_by(user_id: current_user.id, fight_id: @fight) %>
@@ -78,21 +87,9 @@ window.onload = function(){
   <% end %>
 </div>
 
-<hr class="style3">
-<!--
-<ul class="graph">
-  <li class="percent20">20%</li>
-  <li class="percent40">40%</li>
-  <li class="percent60">60%</li>
-  <li class="percent80">80%</li>
-  <li class="percent100">100%</li>
-</ul> -->
+<canvas id="chart<%= @fight.id %>" width="100" height="25"></canvas>
 
-<div style="width: 70%">
-  <canvas id="chart"></canvas>
-</div>
-
-<div class="card col-lg-4">
+<div class="card col-lg-12">
   <small class="text-center">コメント一覧</small>
   <hr class="style3">
   <% @real_forecast.each do |forecast| %>

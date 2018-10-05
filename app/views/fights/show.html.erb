@@ -17,8 +17,8 @@
 <div class="text-center">
   <h5 class="badge badge-pill badge-secondary">採点数 <span class="badge badge-light"><%= @fight.judges.select(:user_id).distinct.count %></span></h5>
   <h5 class="badge badge-pill badge-secondary">コメント数 <span class="badge badge-light"><%= @comments.count %></span></h5>
+  <h5 class="badge badge-pill badge-secondary">予想数 <span class="badge badge-light"><%= @fight.forecasts.count %></span></h5>
 </div>
-
 
 <ul class="nav nav-tabs">
   <li class="nav-item"><a class="nav-link active" href="#sampleContentX" data-toggle="tab">コメント</a></li>
@@ -28,41 +28,101 @@
 <div class="tab-content">
   <div class="tab-pane active" id="sampleContentX">
     <%= render partial: "comments/comment" %>
-
-    <div class="">
-      <% if user_signed_in? %>
-        <button type="button" class="btn btn-warning btn-lg col-12 fixed-bottom" data-toggle="modal" data-target="#myModal"><big>採点する</big></button>
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content box-footer-in">
-              <%= render partial: "judges/my_judge" %>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-outline-light col-12" data-dismiss="modal">閉じる</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      <% else %>
-        <button type="button" class="btn btn-warning btn-lg col-12 fixed-bottom" data-toggle="modal" data-target="#myModal"><big>採点する</big></button>
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content box-footer-in">
-              <p class="text-center" style="color: #FFF">★<%= link_to "会員登録", new_user_registration_path %>、あるいは<%= link_to "ログイン", new_user_session_path %>するとコメントができます。★</p>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-light col-12" data-dismiss="modal">閉じる</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
   </div>
-
   <div class="tab-pane" id="sampleContentY">
+<!-- 全R採点結果の計算部分 -->
+    <% judge_A = @judges.where(fight_id: @fight.id, range: -4..-1).count %>
+    <% judge_draw = @judges.where(fight_id: @fight.id, range: 0).count %>
+    <% judge_B = @judges.where(fight_id: @fight.id, range: 1..4).count %>
+    <% judge_all = (judge_draw + judge_A + judge_B) %>
+    <script>
+      var ctx = document.getElementById('myBarChart');
+      var myBarChart = new Chart(ctx, {
+        type: 'horizontalBar',
+        borderWidth: 3,
+        data: {
+          labels: [""],
+          datasets: [{
+            borderWidth: 3,
+            label: "<%= @fight.player_A %>",
+            data: [<%= judge_A.round(2) / judge_all.round(2) * 100 %>],
+            backgroundColor: "rgba(244, 143, 177, 0.6)"
+          },{
+            borderWidth: 3,
+            label: "ドロー",
+            data: [<%= judge_draw.round(2) / judge_all.round(2) * 100 %>],
+            backgroundColor: "rgba(255, 235, 59, 0.6)"
+          },{
+            borderWidth: 3,
+            label: "<%= @fight.player_B %>",
+            data: [<%= judge_B.round(2) / judge_all.round(2) * 100 %>],
+            backgroundColor: "rgba(100, 181, 246, 0.6)"
+          }]
+        },
+        options:{
+          scales:{
+            xAxes:[{
+              stacked: true,
+              gridLines: {
+                display: false,
+                drawBorder: false
+              },
+              ticks: {
+                display: false,
+              },
+            }],
+            yAxes:[{
+              barPercentage: 0.2,
+              stacked: true,
+              gridLines: {
+                display: false,
+                drawBorder: false
+              },
+            }]
+          },
+          legend:{
+            display: false
+          },
+        }
+      });
+    </script>
+<!-- 全R採点結果の計算部分終了 -->
+    <h4 class="text-center">全ラウンドの採点結果</h4>
+    <canvas id="myBarChart" width="100" height="25"></canvas><hr class="style3">
     <% @judges.group(:round).each do |round| %>
       <%= render partial: "fights/total", locals:{round:round} %>
     <% end %>
   </div>
 </div>
+
+<!-- 採点部分 -->
+<div class="">
+  <% if user_signed_in? %>
+    <button type="button" class="btn btn-warning btn-lg col-12 fixed-bottom" data-toggle="modal" data-target="#myModal"><big>採点する</big></button>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content box-footer-in">
+          <%= render partial: "judges/my_judge" %>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-light col-12" data-dismiss="modal">閉じる</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <button type="button" class="btn btn-warning btn-lg col-12 fixed-bottom" data-toggle="modal" data-target="#myModal"><big>採点する</big></button>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content box-footer-in">
+          <p class="text-center" style="color: #FFF">★<%= link_to "会員登録", new_user_registration_path %>、あるいは<%= link_to "ログイン", new_user_session_path %>するとコメントができます。★</p>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light col-12" data-dismiss="modal">閉じる</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+<!-- 採点部分終了 -->
 
 

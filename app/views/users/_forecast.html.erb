@@ -1,4 +1,7 @@
 
+
+<div class="card col-lg-12">
+
 <script>
 //グラフ
 var doughnutData = [
@@ -22,7 +25,7 @@ var doughnutData = [
   }
 ];
 window.onload = function(){
-  var ctx = document.getElementById("chart").getContext("2d");
+  var ctx = document.getElementById("chart<%= forecast.fight.id %>").getContext("2d");
   window.myDoughnut = new Chart(ctx).Doughnut(doughnutData, {
     responsive : true
   });
@@ -30,10 +33,9 @@ window.onload = function(){
 </script>
 
 
-<div class="card col-lg-4">
   <p><%= link_to "#{forecast.fight.player_A} VS #{forecast.fight.player_B}", new_forecast_path(fight_id: forecast.fight.id) %></p>
   <div style="width: 30%">
-    <canvas id="chart"></canvas>
+    <canvas id="chart<%= forecast.fight.id %>"></canvas>
   </div><br>
   <% if forecast.support == forecast.fight.player_A %>
     <p class="badge badge-danger"><%= forecast.support %>を支持</p>

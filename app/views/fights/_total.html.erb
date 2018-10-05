@@ -1,8 +1,63 @@
 
-<%= round.round %>
-<%= @fight.player_A %>の支持数<%= @judges.where(fight_id: @fight.id, round: round.round, range: round.range < 0).count %>
-ドローの支持数<%= @judges.where(fight_id: @fight.id, round: round.round, range: round.range == 0).count %>
-<%= @fight.player_B %>の支持数<%= @judges.where(fight_id: @fight.id, round: round.round, range: round.range > 0).count %>
+<% @judge_A = @judges.where(fight_id: @fight.id, round: round.round, range: -4..-1).count %>
+<% @judge_draw = @judges.where(fight_id: @fight.id, round: round.round, range: 0).count %>
+<% @judge_B = @judges.where(fight_id: @fight.id, round: round.round, range: 1..4).count %>
+<% @judge_all = (@judge_draw + @judge_A + @judge_B) %>
 
+<h5 class="text-center"><%= round.round %>R 採点結果</h5>
+
+<script>
+  var ctx = document.getElementById('myBarChart<%= round.round %>');
+  var myBarChart = new Chart(ctx, {
+    type: 'horizontalBar',
+    borderWidth: 3,
+    data: {
+      labels: [""],
+      datasets: [{
+        borderWidth: 3,
+        label: "<%= @fight.player_A %>",
+        data: [<%= @judge_A.round(2) / @judge_all.round(2) * 100 %>],
+        backgroundColor: "rgba(244, 143, 177, 0.6)"
+      },{
+        borderWidth: 3,
+        label: "ドロー",
+        data: [<%= @judge_draw.round(2) / @judge_all.round(2) * 100 %>],
+        backgroundColor: "rgba(255, 235, 59, 0.6)"
+      },{
+        borderWidth: 3,
+        label: "<%= @fight.player_B %>",
+        data: [<%= @judge_B.round(2) / @judge_all.round(2) * 100 %>],
+        backgroundColor: "rgba(100, 181, 246, 0.6)"
+      }]
+    },
+    options:{
+      scales:{
+        xAxes:[{
+          stacked: true,
+          gridLines: {
+            display: false,
+            drawBorder: false
+          },
+          ticks: {
+            display: false,
+          },
+        }],
+        yAxes:[{
+          barPercentage: 0.2,
+          stacked: true,
+          gridLines: {
+            display: false,
+            drawBorder: false
+          },
+        }]
+      },
+      legend:{
+        display: false
+      },
+    }
+  });
+</script>
+<canvas id="myBarChart<%= round.round %>" width="100" height="20"></canvas>
 
 <br>
+<hr>

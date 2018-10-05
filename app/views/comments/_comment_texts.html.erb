@@ -9,7 +9,7 @@
   <% end %>
 </div>
 <br>
-<button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#judges<%= comment.user.id %>"><%= comment.user.nickname %>さんの採点表を見る</button>
+<button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#judges<%= comment.user.id %>"><%= comment.user.nickname %>Score</button>
 <div class="modal fade" id="judges<%= comment.user.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content box-footer-in">
